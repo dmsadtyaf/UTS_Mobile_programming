@@ -19,7 +19,7 @@ class FitMotionApp extends StatelessWidget {
   }
 }
 
-//////////////// LOGIN //////////////////
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-//////////////// NAVIGATION //////////////////
+
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -272,7 +272,7 @@ BuildContext context
   }
 }
 
-//////////////// HOME //////////////////
+
 
 class HomePage extends StatefulWidget {
   final String username;
@@ -444,7 +444,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//////////// WORKOUT DETAIL ////////////
+
 
 class WorkoutDetailPage
 extends StatefulWidget{
@@ -561,7 +561,7 @@ extends State<WorkoutDetailPage>{
   }
 }
 
-//////////// SCHEDULE ////////////
+
 
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});
@@ -576,11 +576,11 @@ class SchedulePage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(80),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 80),
 
                 const Text(
                   "Jadwal Latihan Mu!",
@@ -666,7 +666,7 @@ class SchedulePage extends StatelessWidget {
   }
 }
 
-//////////// PROFILE ////////////
+
 
 class ProfilePage extends StatelessWidget {
   final String username;
@@ -813,7 +813,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-//////////// FORGOT PASSWORD ////////////
+
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
