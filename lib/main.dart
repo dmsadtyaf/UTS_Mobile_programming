@@ -563,66 +563,103 @@ extends State<WorkoutDetailPage>{
 
 //////////// SCHEDULE ////////////
 
-class SchedulePage
-extends StatelessWidget{
-
-  const SchedulePage({
-    super.key
-  });
+class SchedulePage extends StatelessWidget {
+  const SchedulePage({super.key});
 
   @override
-  Widget build(
-      BuildContext context
-      ){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        title:
-        const Text(
-          "Schedule",
-        ),
+      appBar: AppBar(
+        title: const Text("Schedule"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(90),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Jadwal Latihan Mu !",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w900,
-                color: Colors.indigo,
-              ),
-            ),
-            const SizedBox(height: 25),
-            Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("Senin : Stretch, Chest Day & Pull Day", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-                    SizedBox(height: 25),
-                    Text("Selasa : Rest Day", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
-                    SizedBox(height: 25),
-                    Text("Rabu : Stretch, Chest Day", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-                    SizedBox(height: 25),
-                    Text("Kamis : Stretch, Pull Day", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-                    SizedBox(height: 25),
-                    Text("Jumat : Stretch, Cardio", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-                    SizedBox(height: 25),
-                    Text("Sabtu : Rest Day", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
-                    SizedBox(height: 25),
-                    Text("Minggu : Rest Day", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
-                  ],
+
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+
+                const Text(
+                  "Jadwal Latihan Mu!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.indigo,
+                  ),
                 ),
-              ),
+
+                const SizedBox(height: 20),
+
+                Card(
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "Senin : Stretch, Chest Day & Pull Day",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Selasa : Rest Day",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Rabu : Stretch, Chest Day",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Kamis : Stretch, Pull Day",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Jumat : Stretch, Cardio",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Sabtu : Rest Day",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Minggu : Rest Day",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -631,12 +668,9 @@ extends StatelessWidget{
 
 //////////// PROFILE ////////////
 
-class ProfilePage
-extends StatelessWidget{
-
+class ProfilePage extends StatelessWidget {
   final String username;
-  final Function(String)
-  onNameChanged;
+  final Function(String) onNameChanged;
 
   const ProfilePage({
     super.key,
@@ -644,50 +678,31 @@ extends StatelessWidget{
     required this.onNameChanged,
   });
 
-  void editName(
-      BuildContext context
-      ){
-
-    TextEditingController name=
-    TextEditingController(
-      text:username,
-    );
+  void editName(BuildContext context) {
+    TextEditingController nameController =
+        TextEditingController(text: username);
 
     showDialog(
-      context:context,
-      builder:(context){
+      context: context,
+      builder: (context) {
         return AlertDialog(
-          title:
-          const Text(
-            "Ganti Nama",
+          title: const Text("Ganti Nama"),
+          content: TextField(
+            controller: nameController,
           ),
-          content:
-          TextField(
-            controller:name,
-          ),
-          actions:[
+          actions: [
             TextButton(
-              onPressed:(){
-                Navigator.pop(context);
-              },
-              child:
-              const Text("Batal"),
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Batal"),
             ),
             ElevatedButton(
-              onPressed:(){
-                if(
-                name.text.isNotEmpty
-                ){
-                  onNameChanged(
-                    name.text,
-                  );
+              onPressed: () {
+                if (nameController.text.isNotEmpty) {
+                  onNameChanged(nameController.text);
                 }
                 Navigator.pop(context);
               },
-              child:
-              const Text(
-                "Simpan",
-              ),
+              child: const Text("Simpan"),
             )
           ],
         );
@@ -695,44 +710,29 @@ extends StatelessWidget{
     );
   }
 
-  void logout(
-      BuildContext context
-      ){
-
+  void logout(BuildContext context) {
     showDialog(
-      context:context,
-      builder:(context){
+      context: context,
+      builder: (context) {
         return AlertDialog(
-          title: const Text(
-            "Logout",
-          ),
-          content:
-          const Text(
-            "Yakin logout?",
-          ),
-          actions:[
+          title: const Text("Logout"),
+          content: const Text("Yakin logout?"),
+          actions: [
             TextButton(
-              onPressed:(){
-                Navigator.pop(context);
-              },
-              child:
-              const Text("Batal"),
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
             ),
             ElevatedButton(
-              onPressed:(){
+              onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder:(_)=>
-                    const LoginPage(),
+                    builder: (_) => const LoginPage(),
                   ),
-                      (route)=>false,
+                  (route) => false,
                 );
               },
-              child:
-              const Text(
-                "Logout",
-              ),
+              child: const Text("Logout"),
             )
           ],
         );
@@ -741,81 +741,72 @@ extends StatelessWidget{
   }
 
   @override
-  Widget build(
-      BuildContext context
-      ){
-
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        title:
-        const Text(
-          "Profile",
-        ),
+      appBar: AppBar(
+        title: const Text("Profile"),
       ),
-      body:Center(
-        child:Column(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
-          children:[
-            const CircleAvatar(
-              radius:60,
-              child:
-              Icon(
-                Icons.person,
-                size:70,
+
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      radius: 60,
+                      child: Icon(Icons.person, size: 70),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    Text(
+                      username,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    SizedBox(
+                      width: 250,
+                      child: ElevatedButton.icon(
+                        onPressed: () => editName(context),
+                        icon: const Icon(Icons.edit),
+                        label: const Text("Ganti Nama"),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    SizedBox(
+                      width: 250,
+                      child: ElevatedButton.icon(
+                        onPressed: () => logout(context),
+                        icon: const Icon(Icons.logout),
+                        label: const Text("Logout"),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height:25),
-            Text(
-              username,
-              style:
-              const TextStyle(
-                fontSize:26,
-                fontWeight:
-                FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height:40),
-            SizedBox(
-              width: 250,
-              child: ElevatedButton.icon(
-                onPressed:(){
-                  editName(context);
-                },
-                icon:
-                const Icon(
-                  Icons.edit,
-                ),
-                label:
-                const Text(
-                  "Ganti Nama",
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-              ),
-            ),
-            const SizedBox(height:15),
-            SizedBox(
-              width: 250,
-              child: ElevatedButton.icon(
-                onPressed:(){
-                  logout(context);
-                },
-                icon:
-                const Icon(
-                  Icons.logout,
-                ),
-                label:
-                const Text(
-                  "Logout",
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -828,22 +819,16 @@ class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
   @override
-  State<ForgotPasswordPage> createState()
-  => _ForgotPasswordPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordPageState
-extends State<ForgotPasswordPage>{
-
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   bool loading = false;
 
   void sendReset() async {
-
-    if(!_formKey.currentState!.validate()){
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       loading = true;
@@ -865,9 +850,7 @@ extends State<ForgotPasswordPage>{
           ),
           actions: [
             ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text("OK"),
             )
           ],
@@ -882,60 +865,82 @@ extends State<ForgotPasswordPage>{
       appBar: AppBar(
         title: const Text("Lupa Password"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.lock_reset,
-                size: 90,
-                color: Colors.indigo,
-              ),
-              const SizedBox(height: 30),
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: "Masukkan Email",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 40),
+
+                    const Icon(
+                      Icons.lock_reset,
+                      size: 90,
+                      color: Colors.indigo,
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: "Masukkan Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Email wajib diisi";
+                        }
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                            .hasMatch(value)) {
+                          return "Format email salah";
+                        }
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: loading ? null : sendReset,
+                        child: loading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text("Kirim Link Reset"),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    TextButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text("Kembali ke Login"),
+                    ),
+
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Email wajib diisi";
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return "Format email salah";
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 25),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: loading ? null : sendReset,
-                  child: loading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text("Kirim Link Reset"),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-                label: const Text("Kembali ke Login"),
-              )
-            ],
+            ),
           ),
         ),
       ),
