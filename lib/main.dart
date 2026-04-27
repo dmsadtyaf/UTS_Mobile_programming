@@ -19,7 +19,7 @@ class FitMotionApp extends StatelessWidget {
   }
 }
 
-
+//////////////// LOGIN //////////////////
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -288,27 +288,49 @@ class _HomePageState extends State<HomePage> {
     'Push Up': false,
     'Bench Press': false,
     'Chin Up': false,
+    'Pull Up': false,
+    'Squat': false,
+
     'Lari di Tempat': false,
     'Jumping Jack': false,
     'Jalan di Tempat': false,
+    'Sit Up': false,
+
     'Stretching 10 Menit': false,
+    'Mini Yoga': false,
+    'Dumbbell Stretch': false,
   };
 
   final List<Map<String, dynamic>> menus = [
     {
       "title": "Main Training",
       "icon": Icons.fitness_center,
-      "items": ["Push Up", "Bench Press", "Chin Up"]
+      "items": [
+        "Push Up",
+        "Bench Press",
+        "Chin Up",
+        "Pull Up",
+        "Squat",
+      ]
     },
     {
       "title": "Cardio",
       "icon": Icons.directions_run,
-      "items": ["Lari di Tempat", "Jumping Jack", "Jalan di Tempat"]
+      "items": [
+        "Lari di Tempat",
+        "Jumping Jack",
+        "Jalan di Tempat",
+        "Sit Up",
+      ]
     },
     {
       "title": "Stretching",
       "icon": Icons.self_improvement,
-      "items": ["Stretching 10 Menit"]
+      "items": [
+        "Stretching 10 Menit",
+        "Mini Yoga",
+        "Dumbbell Stretch",
+      ]
     },
   ];
 
@@ -325,20 +347,17 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Halo ${widget.username}"),
       ),
-
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      // 🔵 PROGRESS CARD
+                      // PROGRESS CARD
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
@@ -352,7 +371,6 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             const SizedBox(height: 10),
-
                             Text(
                               "${(progress * 100).toInt()}%",
                               style: const TextStyle(
@@ -360,15 +378,13 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                               ),
                             ),
-
                             LinearProgressIndicator(value: progress),
-
                             const SizedBox(height: 15),
-
                             ElevatedButton.icon(
                               onPressed: () {
                                 setState(() {
-                                  statusWorkout.updateAll((key, value) => false);
+                                  statusWorkout
+                                      .updateAll((key, value) => false);
                                 });
                               },
                               icon: const Icon(Icons.refresh),
@@ -380,7 +396,7 @@ class _HomePageState extends State<HomePage> {
 
                       const SizedBox(height: 20),
 
-                      // 🔥 MENU LIST (LISTVIEW BUILDER STYLE)
+                      // MENU
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -404,19 +420,19 @@ class _HomePageState extends State<HomePage> {
                               title: Text(
                                 menu["title"],
                                 style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              trailing: const Icon(Icons.arrow_forward_ios),
-
+                              trailing:
+                                  const Icon(Icons.arrow_forward_ios),
                               onTap: () async {
                                 final result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => WorkoutDetailPage(
                                       title: menu["title"],
-                                      workouts: List<String>.from(menu["items"]),
+                                      workouts:
+                                          List<String>.from(menu["items"]),
                                       statusMap: statusWorkout,
                                     ),
                                   ),
@@ -446,12 +462,10 @@ class _HomePageState extends State<HomePage> {
 
 
 
-class WorkoutDetailPage
-extends StatefulWidget{
-
+class WorkoutDetailPage extends StatefulWidget {
   final String title;
   final List<String> workouts;
-  final Map<String,bool> statusMap;
+  final Map<String, bool> statusMap;
 
   const WorkoutDetailPage({
     super.key,
@@ -461,101 +475,72 @@ extends StatefulWidget{
   });
 
   @override
-  State<WorkoutDetailPage>
-  createState()
-  => _WorkoutDetailPageState();
+  State<WorkoutDetailPage> createState() => _WorkoutDetailPageState();
 }
 
-class _WorkoutDetailPageState
-extends State<WorkoutDetailPage>{
-
-  late Map<String,bool>
-  localStatus;
+class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
+  late Map<String, bool> localStatus;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    localStatus=
-        Map.from(
-          widget.statusMap,
-        );
+
+    localStatus = Map.from(widget.statusMap);
+
+    // auto sync biar gak null
+    for (var item in widget.workouts) {
+      localStatus.putIfAbsent(item, () => false);
+    }
   }
 
   @override
-  Widget build(
-      BuildContext context
-      ){
-
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        title:
-        Text(
-          widget.title,
-        ),
+      appBar: AppBar(
+        title: Text(widget.title),
       ),
-      body:ListView.builder(
-        itemCount:
-        widget.workouts.length,
-        itemBuilder:
-            (context,index){
+      body: ListView.builder(
+        itemCount: widget.workouts.length,
+        itemBuilder: (context, index) {
+          String item = widget.workouts[index];
 
-          String item=
-          widget.workouts[index];
+          bool done = localStatus[item] ?? false;
 
           return Card(
-            child:ListTile(
-              leading:
-              IconButton(
-                icon:Icon(
+            child: ListTile(
+              leading: IconButton(
+                icon: Icon(
                   Icons.check_circle,
-                  color:
-                  localStatus[item]!
-                      ? Colors.green
-                      : Colors.grey,
+                  color: done ? Colors.green : Colors.grey,
                 ),
-                onPressed:(){
+                onPressed: () {
                   setState(() {
-                    localStatus[item]=
-                    !localStatus[item]!;
+                    localStatus[item] = !done;
                   });
                 },
               ),
-              title:
-              Text(
+              title: Text(
                 item,
-                style:TextStyle(
+                style: TextStyle(
                   decoration:
-                  localStatus[item]!
-                      ? TextDecoration.lineThrough
-                      :null,
+                      done ? TextDecoration.lineThrough : null,
                 ),
               ),
-              onTap:(){
+              onTap: () {
                 setState(() {
-                  localStatus[item]=
-                  !localStatus[item]!;
+                  localStatus[item] = !done;
                 });
               },
             ),
           );
         },
       ),
-      floatingActionButton:
-      FloatingActionButton.extended(
-        onPressed:(){
-          Navigator.pop(
-            context,
-            localStatus,
-          );
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pop(context, localStatus);
         },
-        icon:
-        const Icon(
-          Icons.save,
-        ),
-        label:
-        const Text(
-          "Simpan Progress",
-        ),
+        icon: const Icon(Icons.save),
+        label: const Text("Simpan Progress"),
       ),
     );
   }
@@ -605,7 +590,7 @@ class SchedulePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          "Senin : Stretch, Chest Day & Pull Day",
+                          "Senin : Stretch bebas, Cardio bebas, Push Up, Chin Up",
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: 15),
@@ -620,19 +605,19 @@ class SchedulePage extends StatelessWidget {
                         SizedBox(height: 15),
 
                         Text(
-                          "Rabu : Stretch, Chest Day",
+                          "Rabu : Stretch bebas, Pull Up, Squat",
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: 15),
 
                         Text(
-                          "Kamis : Stretch, Pull Day",
+                          "Kamis : Stretch bebas, Bench Press, push up",
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: 15),
 
                         Text(
-                          "Jumat : Stretch, Cardio",
+                          "Jumat : Stretch bebas, Full Cardio",
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: 15),
